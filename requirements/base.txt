@@ -2,3 +2,4 @@ Falcon
 Click
 Pony
 python-dotenv
+simple-settings[yaml]

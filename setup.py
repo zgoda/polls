@@ -42,6 +42,9 @@ setup(
     install_requires=(
         'Falcon',
         'Click',
+        'Pony',
+        'python-dotenv',
+        'simple-settings[yaml]',
     ),
     extras_require={
         'prod': [

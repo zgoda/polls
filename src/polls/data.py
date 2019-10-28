@@ -1,7 +1,8 @@
-import os
 from datetime import datetime, timedelta
 
-from pony.orm import Database, Required, Optional, Set
+from pony.orm import Database, Optional, Required, Set
+
+from .config import db_provider_config
 
 db = Database()
 
@@ -22,9 +23,16 @@ class Option(db.Entity):
     title = Required(str)
     value = Optional(str)
     poll = Required(Poll)
+    votes = Set('Vote')
 
 
-db.bind(
-    provider='sqlite', filename=os.environ['SQLITE_FILENAME'], create_tables=True
-)
+class Vote(db.Entity):
+    option = Required(Option)
+    remote_ip = Optional(str)
+    cap_digest = Optional(str)
+    user_name = Optional(str)
+
+
+db.bind(**db_provider_config())
+
 db.generate_mapping(create_tables=True)
