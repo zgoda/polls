@@ -1,0 +1,4 @@
+Falcon
+Click
+Pony
+python-dotenv
