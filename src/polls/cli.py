@@ -2,8 +2,11 @@ import click
 from dotenv import load_dotenv, find_dotenv
 
 
-@click.group()
-def cli():
+cli = click.Group()
+
+
+@cli.command()
+def run():
     pass
 
 
