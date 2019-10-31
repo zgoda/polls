@@ -27,6 +27,23 @@ def find_version(*file_paths):
 
 long_description = read('README.rst')
 
+base_reqs = [
+    'Falcon',
+    'Click',
+    'Pony',
+    'python-dotenv',
+    'simple-settings[yaml]',
+]
+
+prod_reqs = [
+    'uwsgi'
+]
+
+dev_reqs = [
+    'werkzeug[watchdog]',
+    'termcolor',
+]
+
 setup(
     name='polls-app',
     version=find_version('src', 'polls', '_version.py'),
@@ -39,17 +56,10 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    install_requires=(
-        'Falcon',
-        'Click',
-        'Pony',
-        'python-dotenv',
-        'simple-settings[yaml]',
-    ),
+    install_requires=base_reqs,
     extras_require={
-        'prod': [
-            'uwsgi',
-        ]
+        'prod': prod_reqs,
+        'dev': dev_reqs,
     },
     entry_points={
         'console_scripts': [
