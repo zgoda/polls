@@ -3,4 +3,5 @@ Flask-WTF
 Flask-RESTful
 Pony
 Marshmallow
+Flask-Marshmallow
 python-dotenv

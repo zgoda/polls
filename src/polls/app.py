@@ -1,14 +1,14 @@
 import os
 from logging.config import dictConfig
 
-from flask import render_template, Blueprint
+from flask import Blueprint, render_template
 from werkzeug.utils import ImportStringError
 
-from .ext import csrf, pony, api
+from .ext import api, csrf, marshmallow, pony
 from .models import db
+from .resource.poll import PollCollection, PollResource
 from .utils.app import Application
 from .utils.templates import extra_context, extra_filters
-from .resource.poll import Poll, PollCollection
 
 
 def make_app(env=None):
@@ -54,15 +54,17 @@ def configure_blueprints(app):
 
 def configure_api(app):
     api_bp = Blueprint('api', __name__)
+    api_bp = csrf.exempt(api_bp)
     api.init_app(api_bp)
     api.add_resource(PollCollection, '/polls')
-    api.add_resource(Poll, '/poll/<int:poll_id>')
+    api.add_resource(PollResource, '/poll/<int:poll_id>')
     app.register_blueprint(api_bp, url_prefix='/api/v1')
 
 
 def configure_extensions(app):
     pony.init_app(app)
     csrf.init_app(app)
+    marshmallow.init_app(app)
 
     db.bind(**app.config['PONY_CONFIG'])
     db.generate_mapping(create_tables=True)

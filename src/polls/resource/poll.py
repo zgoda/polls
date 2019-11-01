@@ -1,16 +1,26 @@
 from flask import abort
 from flask_restful import Resource
+from pony.orm.core import ObjectNotFound
+
+from ..models import Poll
+from ..schema import poll_schema, polls_schema
 
 
-class Poll(Resource):
+class PollResource(Resource):
 
     def get(self, poll_id):
-        if poll_id == 0:
+        try:
+            poll = Poll[poll_id]
+            return poll_schema.dump(poll)
+        except ObjectNotFound:
             abort(404)
-        return {'message': f'Hello my dear, this is poll ID {poll_id}!'}
 
 
 class PollCollection(Resource):
 
     def get(self):
-        return {'polls': ['poll1', 'poll2']}
+        polls = Poll.select()
+        return polls_schema.dump(polls)
+
+    def post(self):
+        pass

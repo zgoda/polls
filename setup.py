@@ -33,6 +33,7 @@ base_reqs = [
     'Flask-RESTful',
     'Pony',
     'Marshmallow',
+    'Flask-Marshmallow',
     'python-dotenv',
 ]
 

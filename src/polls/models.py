@@ -16,9 +16,6 @@ class Poll(db.Entity):
     end_dt = Required(datetime, default=default_poll_duration)
     options = Set('Option')
 
-    def is_valid(self):
-        return bool(self.options)
-
 
 class Option(db.Entity):
     title = Required(str)
