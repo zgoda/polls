@@ -1,20 +1,16 @@
-import json
+from flask import abort
+from flask_restful import Resource
 
 
-class Poll:
+class Poll(Resource):
 
-    def on_get(self, req, resp, poll_id):
-        resp.body = json.dumps(
-            {'message': f'Hello my dear, this is poll ID {poll_id}!'},
-            ensure_ascii=False,
-        )
-
-
-class PollCollection:
-
-    def on_get(self, req, resp):
-        resp.body = json.dumps({'polls': ['poll1', 'poll2']}, ensure_ascii=False)
+    def get(self, poll_id):
+        if poll_id == 0:
+            abort(404)
+        return {'message': f'Hello my dear, this is poll ID {poll_id}!'}
 
 
-poll = Poll()
-poll_collection = PollCollection()
+class PollCollection(Resource):
+
+    def get(self):
+        return {'polls': ['poll1', 'poll2']}

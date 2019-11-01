@@ -29,7 +29,10 @@ long_description = read('README.rst')
 
 base_reqs = [
     'Flask',
+    'Flask-WTF',
+    'Flask-RESTful',
     'Pony',
+    'Marshmallow',
     'python-dotenv',
 ]
 
@@ -47,7 +50,7 @@ setup(
     version=find_version('src', 'polls', '_version.py'),
     author='Jarek Zgoda',
     author_email='jarek.zgoda@gmail.com',
-    description='Simple polls backend application',
+    description='Simple polls application',
     long_description=long_description,
     license='MIT',
     packages=find_packages('src'),

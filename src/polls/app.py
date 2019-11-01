@@ -1,13 +1,14 @@
 import os
 from logging.config import dictConfig
 
-from flask import render_template
+from flask import render_template, Blueprint
 from werkzeug.utils import ImportStringError
 
-from .ext import csrf, pony
+from .ext import csrf, pony, api
 from .models import db
 from .utils.app import Application
 from .utils.templates import extra_context, extra_filters
+from .resource.poll import Poll, PollCollection
 
 
 def make_app(env=None):
@@ -21,6 +22,7 @@ def make_app(env=None):
     with app.app_context():
         configure_hooks(app)
         configure_blueprints(app)
+        configure_api(app)
         configure_error_handlers(app)
     return app
 
@@ -48,6 +50,14 @@ def configure_hooks(app):
 
 def configure_blueprints(app):
     pass
+
+
+def configure_api(app):
+    api_bp = Blueprint('api', __name__)
+    api.init_app(api_bp)
+    api.add_resource(PollCollection, '/polls')
+    api.add_resource(Poll, '/poll/<int:poll_id>')
+    app.register_blueprint(api_bp, url_prefix='/api/v1')
 
 
 def configure_extensions(app):
@@ -88,13 +98,13 @@ def configure_logging():
 def configure_error_handlers(app):
 
     @app.errorhandler(403)
-    def forbidden_page(error):  # pylint: disable=unused-variable
+    def forbidden_page(error):
         return render_template('errors/403.html'), 403
 
     @app.errorhandler(404)
-    def page_not_found(error):  # pylint: disable=unused-variable
+    def page_not_found(error):
         return render_template('errors/404.html'), 404
 
     @app.errorhandler(500)
-    def server_error_page(error):  # pylint: disable=unused-variable
+    def server_error_page(error):
         return render_template('errors/500.html'), 500
