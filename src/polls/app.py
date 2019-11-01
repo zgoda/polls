@@ -4,7 +4,7 @@ from logging.config import dictConfig
 from flask import Blueprint, render_template
 from werkzeug.utils import ImportStringError
 
-from .ext import api, csrf, marshmallow, pony
+from .ext import api, csrf, msmw, pony
 from .models import db
 from .resource.poll import PollCollection, PollResource
 from .utils.app import Application
@@ -64,7 +64,7 @@ def configure_api(app):
 def configure_extensions(app):
     pony.init_app(app)
     csrf.init_app(app)
-    marshmallow.init_app(app)
+    msmw.init_app(app)
 
     db.bind(**app.config['PONY_CONFIG'])
     db.generate_mapping(create_tables=True)

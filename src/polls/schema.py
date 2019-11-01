@@ -1,10 +1,20 @@
-from .ext import marshmallow
+from marshmallow import fields
+
+from .ext import msmw
 
 
-class PollSchema(marshmallow.Schema):
+class OptionSchema(msmw.Schema):
 
     class Meta:
-        fields = ('id', 'title', 'description', 'start_dt', 'end_dt')
+        fields = ('id', 'title', 'value')
+
+
+class PollSchema(msmw.Schema):
+
+    class Meta:
+        fields = ('id', 'title', 'description', 'start_dt', 'end_dt', 'options')
+
+    options = fields.Nested(OptionSchema, many=True)
 
 
 poll_schema = PollSchema()

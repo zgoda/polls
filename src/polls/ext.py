@@ -6,4 +6,4 @@ from pony.flask import Pony
 pony = Pony()
 csrf = CSRFProtect()
 api = Api()
-marshmallow = Marshmallow()
+msmw = Marshmallow()
