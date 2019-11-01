@@ -1,5 +1,4 @@
-Falcon
-Click
+Flask
+Flask-WTF
 Pony
 python-dotenv
-simple-settings[yaml]

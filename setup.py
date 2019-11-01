@@ -28,11 +28,9 @@ def find_version(*file_paths):
 long_description = read('README.rst')
 
 base_reqs = [
-    'Falcon',
-    'Click',
+    'Flask',
     'Pony',
     'python-dotenv',
-    'simple-settings[yaml]',
 ]
 
 prod_reqs = [
@@ -40,7 +38,7 @@ prod_reqs = [
 ]
 
 dev_reqs = [
-    'werkzeug[watchdog]',
+    'watchdog',
     'termcolor',
 ]
 

@@ -1,17 +1,100 @@
-import falcon
+import os
+from logging.config import dictConfig
 
-from .resource import poll
+from flask import render_template
+from werkzeug.utils import ImportStringError
 
-
-class PollsApp(falcon.API):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.set_routes()
-
-    def set_routes(self):
-        self.add_route('/polls', poll.poll_collection)
-        self.add_route('/polls/{poll_id}', poll.poll)
+from .ext import csrf, pony
+from .models import db
+from .utils.app import Application
+from .utils.templates import extra_context, extra_filters
 
 
-api = application = PollsApp()
+def make_app(env=None):
+    flask_environment = os.environ.get('FLASK_ENV', '')
+    if flask_environment == 'production':
+        configure_logging()
+    app = Application(__name__.split('.')[0])
+    configure_app(app, env)
+    configure_extensions(app)
+    configure_templating(app)
+    with app.app_context():
+        configure_hooks(app)
+        configure_blueprints(app)
+        configure_error_handlers(app)
+    return app
+
+
+def configure_app(app, env):
+    app.config.from_object('polls.config')
+    if env is not None:
+        try:
+            app.config.from_object(f'polls.config_{env}')
+        except ImportStringError:
+            app.logger.info(f'no environment config for {env}')
+    config_local = os.environ.get('CONFIG_LOCAL')
+    if config_local:
+        app.logger.info(f'local configuration loaded from {config_local}')
+        app.config.from_envvar('CONFIG_LOCAL')
+    config_secrets = os.environ.get('CONFIG_SECRETS')
+    if config_secrets:
+        app.logger.info(f'secrets loaded from {config_secrets}')
+        app.config.from_envvar('CONFIG_SECRETS')
+
+
+def configure_hooks(app):
+    pass
+
+
+def configure_blueprints(app):
+    pass
+
+
+def configure_extensions(app):
+    pony.init_app(app)
+    csrf.init_app(app)
+
+    db.bind(**app.config['PONY_CONFIG'])
+    db.generate_mapping(create_tables=True)
+
+
+def configure_templating(app):
+    app.jinja_env.globals.update(extra_context())
+    app.jinja_env.filters.update(extra_filters())
+
+
+def configure_logging():
+    dictConfig({
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+            }
+        },
+        'handlers': {
+            'wsgi': {
+                'class': 'logging.StreamHandler',
+                'stream': 'ext://flask.logging.wsgi_errors_stream',
+                'formatter': 'default',
+            }
+        },
+        'root': {
+            'level': 'INFO',
+            'handlers': ['wsgi'],
+        },
+    })
+
+
+def configure_error_handlers(app):
+
+    @app.errorhandler(403)
+    def forbidden_page(error):  # pylint: disable=unused-variable
+        return render_template('errors/403.html'), 403
+
+    @app.errorhandler(404)
+    def page_not_found(error):  # pylint: disable=unused-variable
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def server_error_page(error):  # pylint: disable=unused-variable
+        return render_template('errors/500.html'), 500
