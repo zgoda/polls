@@ -41,4 +41,5 @@ class PollCollection(Resource):
         poll = poll_schema.load(request.json)
         for option_data in options_doc:
             Option(poll=poll, **option_data)
-        return 201, poll_schema.dump(poll)
+        poll.flush()
+        return poll_schema.dump(poll), 201
