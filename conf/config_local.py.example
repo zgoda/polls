@@ -1,1 +1,9 @@
+import os
+
 DEBUG = True
+
+PONY_CONFIG = {
+    'provider': 'sqlite',
+    'filename': os.environ['SQLITE_FILENAME'],
+    'create_db': True,
+}

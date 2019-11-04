@@ -2,8 +2,8 @@ from flask import abort, request
 from flask_restful import Resource
 from pony.orm.core import ObjectNotFound
 
-from ..models import Poll
-from ..schema import poll_schema, polls_schema, option_schema
+from ..models import Option, Poll
+from ..schema import option_schema, poll_schema, polls_schema
 
 
 class PollResource(Resource):
@@ -37,4 +37,8 @@ class PollCollection(Resource):
         return polls_schema.dump(polls)
 
     def post(self):
-        pass
+        options_doc = request.json.pop('options', [])
+        poll = poll_schema.load(request.json)
+        for option_data in options_doc:
+            Option(poll=poll, **option_data)
+        return 201, poll_schema.dump(poll)
