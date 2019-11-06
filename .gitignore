@@ -112,3 +112,6 @@ conf/*.py
 conf/*.json
 conf/*.yml
 conf/*.yaml
+
+# lol
+node_modules

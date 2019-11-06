@@ -9,5 +9,7 @@ class Application(Flask):
         options.update({
             'trim_blocks': True,
             'lstrip_blocks': True,
+            'variable_start_string': '|{',
+            'variable_end_string': '}|',
         })
         return options

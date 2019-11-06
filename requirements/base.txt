@@ -1,6 +1,5 @@
 Flask
 Flask-WTF
-Flask-RESTful
 Pony
 Marshmallow
 Flask-Marshmallow

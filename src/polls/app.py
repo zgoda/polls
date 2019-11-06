@@ -1,12 +1,12 @@
 import os
 from logging.config import dictConfig
 
-from flask import Blueprint, render_template
+from flask import render_template
 from werkzeug.utils import ImportStringError
 
-from .ext import api, csrf, msmw, pony
+from .ext import csrf, msmw, pony
+from .main import main_bp
 from .models import db
-from .resource.poll import PollCollection, PollResource
 from .utils.app import Application
 from .utils.templates import extra_context, extra_filters
 
@@ -22,7 +22,6 @@ def make_app(env=None):
     with app.app_context():
         configure_hooks(app)
         configure_blueprints(app)
-        configure_api(app)
         configure_error_handlers(app)
     return app
 
@@ -49,16 +48,7 @@ def configure_hooks(app):
 
 
 def configure_blueprints(app):
-    pass
-
-
-def configure_api(app):
-    api_bp = Blueprint('api', __name__)
-    api_bp = csrf.exempt(api_bp)
-    api.init_app(api_bp)
-    api.add_resource(PollCollection, '/polls')
-    api.add_resource(PollResource, '/poll/<int:poll_id>')
-    app.register_blueprint(api_bp, url_prefix='/api/v1')
+    app.register_blueprint(main_bp)
 
 
 def configure_extensions(app):
@@ -71,7 +61,11 @@ def configure_extensions(app):
 
 
 def configure_templating(app):
-    app.jinja_env.globals.update(extra_context())
+    ctx = {
+        'debug': app.debug,
+    }
+    ctx.update(extra_context())
+    app.jinja_env.globals.update(ctx)
     app.jinja_env.filters.update(extra_filters())
 
 
