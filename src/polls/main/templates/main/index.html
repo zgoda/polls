@@ -1,5 +1,7 @@
 {% extends "main/base.html" %}
 
+{% block pagetitle %}Polls application{% endblock %}
+
 {% block content %}
 <h1>Polls</h1>
 <div id="app">
@@ -7,5 +9,5 @@
 {% endblock %}
 
 {% block pagejs %}
-<script type="module" src="/static/js/index.js"></script>
+<script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}

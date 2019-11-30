@@ -14,7 +14,7 @@ class App extends Component {
       <div class="app">
         <ul>
           ${this.state.polls.map((poll) => html`
-          <li>${poll.title}</li>
+          <li><a href="/poll/${poll.id}">${poll.title}</a></li>
           `)}
         </ul>
       </div>
