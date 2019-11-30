@@ -29,7 +29,5 @@ class PollSchema(msmw.Schema):
 
 
 option_schema = OptionSchema()
-options_schema = OptionSchema(many=True)
 
 poll_schema = PollSchema()
-polls_schema = PollSchema(many=True)

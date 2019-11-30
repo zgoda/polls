@@ -4,6 +4,7 @@ from logging.config import dictConfig
 from flask import render_template
 from werkzeug.utils import ImportStringError
 
+from .api import api_bp
 from .ext import csrf, msmw, pony
 from .main import main_bp
 from .models import db
@@ -49,6 +50,7 @@ def configure_hooks(app):
 
 def configure_blueprints(app):
     app.register_blueprint(main_bp)
+    app.register_blueprint(api_bp, url_prefix='/api')
 
 
 def configure_extensions(app):
