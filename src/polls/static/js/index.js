@@ -1,20 +1,22 @@
 import { html, Component, render } from '../vendor/preact.min.js';
 
 class App extends Component {
-  addTodo() {
-    const { todos = [] } = this.state;
-    this.setState({ todos: todos.concat(`Item ${todos.length}`) });
+  state = { polls: [] };
+
+  async componentDidMount() {
+    const resp = await fetch('/api/polls');
+    const polls = await resp.json();
+    this.setState({ polls });
   }
 
-  render({ todos = [] }) {
+  render() {
     return html`
       <div class="app">
         <ul>
-          ${todos.map((todo) => html`
-            <li>${todo}</li>
+          ${this.state.polls.map((poll) => html`
+          <li>${poll.title}</li>
           `)}
         </ul>
-        <button onClick=${() => this.addTodo()}>Add Todo</button>
       </div>
     `;
   }
