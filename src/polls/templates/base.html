@@ -4,13 +4,8 @@
     <meta charset="utf-8">
     <title>{% block pagetitle %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/themes/sandstone.min.css">
+    <link rel="stylesheet" href="/static/vendor/bulma.min.css">
     <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
-    {% if config.debug %}
-    <script defer src="/static/vendor/vue.js"></script>
-    {% else %}
-    <script defer src="/static/vendor/vue.min.js"></script>
-    {% endif %}
   </head>
   <body>
     <section class="section">
@@ -21,6 +16,7 @@
         {% endblock %}
       </div>
     </section>
-    <script src="/static/js/|{ page }|.js" type="module"></script>
+    {% block pagejs %}
+    {% endblock %}
   </body>
 </html>

@@ -30,7 +30,6 @@ long_description = read('README.rst')
 base_reqs = [
     'Flask',
     'Flask-WTF',
-    'Flask-RESTful',
     'Pony',
     'Marshmallow',
     'Flask-Marshmallow',
