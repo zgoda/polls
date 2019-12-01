@@ -39,20 +39,20 @@ class App extends Component {
       ret = html`
         <div class="app">
           ${this.state.poll.options.map((option) => html`
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="option"
-                value="${option.value}"
-                onInput=${(e) => this.onOptionChange(e)}
-              />
-              ${option.title}
-            </label>
-          </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="option"
+                  value="${option.value}"
+                  onInput=${(e) => this.onOptionChange(e)}
+                />
+                <span class="checkable">${option.title}</span>
+              </label>
+            </div>
           `)}
           <div>
-            <button class="button is-primary" onClick=${() => this.doVote()}>Cast vote</button>
+            <button onClick=${() => this.doVote()}>Cast vote</button>
           </div>
         </div>
       `;

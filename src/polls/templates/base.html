@@ -4,16 +4,15 @@
     <meta charset="utf-8">
     <title>{% block pagetitle %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/static/vendor/bulma.min.css">
+    <link rel="stylesheet" href="/static/vendor/picnic.min.css">
+    <link rel="stylesheet" href="/static/css/app.css">
     {% block extrahead %}
     {% endblock %}
   </head>
   <body>
-    <section class="section">
-      <div class="container content">
-      {% block content %}
-      {% endblock %}
-      </div>
+    <section>
+    {% block content %}
+    {% endblock %}
     </section>
     {% block pagejs %}
     {% endblock %}
