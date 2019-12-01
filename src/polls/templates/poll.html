@@ -2,6 +2,7 @@
 
 {% block extrahead %}
 <meta name="poll-id" content="{{ poll.id }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
 {% block pagetitle %}Poll {{ poll.title }}{% endblock %}

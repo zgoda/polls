@@ -5,16 +5,21 @@ class App extends Component {
 
   async componentDidMount() {
     const pollId = document.getElementsByName('poll-id')[0].content;
+    const csrfToken = document.getElementsByName('csrf-token')[0].content;
     const url = `/api/poll/${pollId}`;
     const resp = await fetch(url);
     const poll = await resp.json();
-    this.setState({ poll });
+    this.setState({ poll, pollId, csrfToken });
   }
 
   async doVote() {
-    const resp = await fetch(`/api/poll/${this.state.poll.id}/vote`, {
+    const resp = await fetch(`/api/poll/${this.state.pollId}/vote`, {
       method: 'POST',
-      body: JSON.stringify({ option: this.state.selected }),
+      body: JSON.stringify({ selected: this.state.selected }),
+      headers: {
+        'X-CSRFToken': this.state.csrfToken,
+        'Content-Type': 'application/json',
+      },
     });
     if (resp.ok) {
       this.setState({ voted: true });
@@ -28,7 +33,7 @@ class App extends Component {
   render() {
     let ret = 'empty';
     if (this.state.voted) {
-      ret = html`<p>Oh noes, you already voted!</p>`;
+      ret = html`<p>Thank you for your vote!</p>`;
     } else if (this.state.poll != null) {
       this.state.poll.options.sort((a, b) => ((a.title > b.title) ? 1 : -1));
       ret = html`
@@ -40,7 +45,7 @@ class App extends Component {
                 type="radio"
                 name="option"
                 value="${option.value}"
-                onChange=${(e) => this.onOptionChange(e)}
+                onInput=${(e) => this.onOptionChange(e)}
               />
               ${option.title}
             </label>

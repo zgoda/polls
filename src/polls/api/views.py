@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request, Response
 from pony.orm import db_session
 
 from ..models import Poll
@@ -19,3 +19,13 @@ def polls():
 def poll(poll_id: int):
     poll = or_404(Poll.get(id=poll_id))
     return jsonify(poll_schema.dump(poll))
+
+
+@api_bp.route('/poll/<int:poll_id>/vote', methods=['POST'])
+@db_session
+def vote(poll_id: int):
+    data = request.json
+    poll = or_404(Poll.get(id=poll_id))
+    option = poll.options.select(lambda o: o.value == data['selected']).get()
+    option.votes.create()
+    return Response(status=201)
