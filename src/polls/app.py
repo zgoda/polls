@@ -9,7 +9,6 @@ from .ext import csrf, msmw, pony
 from .main import main_bp
 from .models import db
 from .utils.app import Application
-from .utils.templates import extra_context, extra_filters
 
 
 def make_app(env=None):
@@ -63,12 +62,7 @@ def configure_extensions(app):
 
 
 def configure_templating(app):
-    ctx = {
-        'debug': app.debug,
-    }
-    ctx.update(extra_context())
-    app.jinja_env.globals.update(ctx)
-    app.jinja_env.filters.update(extra_filters())
+    pass
 
 
 def configure_logging():
