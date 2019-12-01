@@ -1,9 +1,8 @@
 # Simple Polls
 
-Simple polls app to learn application development with some Javascript UI
-library.
+Simple polls app to learn application development with some Javascript UI library. This is educational project. I found that it's easiest for me to learn while I try to explain the domain like writing a tutorial.
 
-Backend is in Flask + Pony, located in ``src/polls``.
+Backend is in Flask + Pony, located in ``src/polls``, frontend is Preact + HTM.
 
 ## Run the app
 
