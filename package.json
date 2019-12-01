@@ -1,18 +1,10 @@
 {
   "name": "polls",
   "version": "1.0.0",
-  "description": "Simple Polls ============",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Simple Polls",
   "repository": {
     "type": "git",
-    "url": "github.com-prv:zgoda/polls.git"
+    "url": "https://github.com/zgoda/polls"
   },
   "author": "",
   "license": "MIT",

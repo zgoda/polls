@@ -115,3 +115,4 @@ conf/*.yaml
 
 # lol
 node_modules
+package-lock.json
