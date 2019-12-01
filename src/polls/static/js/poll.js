@@ -30,9 +30,11 @@ class App extends Component {
     if (this.state.voted) {
       ret = html`<p>Oh noes, you already voted!</p>`;
     } else if (this.state.poll != null) {
+      this.state.poll.options.sort((a, b) => ((a.title > b.title) ? 1 : -1));
       ret = html`
         <div class="app">
           ${this.state.poll.options.map((option) => html`
+          <div>
             <label>
               <input
                 type="radio"
@@ -42,8 +44,11 @@ class App extends Component {
               />
               ${option.title}
             </label>
+          </div>
           `)}
-          <button onClick=${() => this.doVote()}>Cast vote</button>
+          <div>
+            <button class="button is-primary" onClick=${() => this.doVote()}>Cast vote</button>
+          </div>
         </div>
       `;
     }
