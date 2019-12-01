@@ -1,7 +1,7 @@
 import os
 from logging.config import dictConfig
 
-from flask import render_template
+from flask import render_template, send_from_directory
 from werkzeug.utils import ImportStringError
 
 from .api import api_bp
@@ -41,6 +41,13 @@ def configure_app(app, env):
     if config_secrets:
         app.logger.info(f'secrets loaded from {config_secrets}')
         app.config.from_envvar('CONFIG_SECRETS')
+    if app.debug:
+        @app.route('/favicon.ico')
+        def favicon():
+            return send_from_directory(
+                app.static_folder, filename='favicon.ico',
+                mimetype='image/vnd.microsoft.icon',
+            )
 
 
 def configure_hooks(app):
