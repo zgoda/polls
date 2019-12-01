@@ -25,7 +25,7 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-long_description = read('README.rst')
+long_description = read('README.md')
 
 base_reqs = [
     'Flask',
@@ -52,6 +52,7 @@ setup(
     author_email='jarek.zgoda@gmail.com',
     description='Simple polls application',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license='MIT',
     packages=find_packages('src'),
     package_dir={'': 'src'},
