@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<meta name="poll-id" content="{{ poll.id }}">
+{% endblock %}
+
+{% block pagetitle %}Poll {{ poll.title }}{% endblock %}
+
+{% block content %}
+<h1>Poll {{ poll.title }}</h1>
+<p class="subtitle">{{ poll.description }}</p>
+<div id="app">
+</div>
+{% endblock %}
+
+{% block pagejs %}
+<script type="module" src="{{ url_for('static', filename='js/poll.js') }}"></script>
+{% endblock %}

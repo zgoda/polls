@@ -8,11 +8,11 @@ from . import main_bp
 
 @main_bp.route('/')
 def index():
-    return render_template('main/index.html')
+    return render_template('index.html')
 
 
 @main_bp.route('/poll/<int:poll_id>')
 @db_session
 def poll(poll_id: int):
     poll = or_404(Poll.get(id=poll_id))
-    return render_template('main/poll.html', poll=poll)
+    return render_template('poll.html', poll=poll)
