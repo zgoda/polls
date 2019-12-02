@@ -44,7 +44,7 @@ class App extends Component {
                 <input
                   type="radio"
                   name="option"
-                  value="${option.value}"
+                  value="${option.id}"
                   onInput=${(e) => this.onOptionChange(e)}
                 />
                 <span class="checkable">${option.title}</span>

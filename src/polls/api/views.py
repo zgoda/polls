@@ -26,6 +26,6 @@ def poll(poll_id: int):
 def vote(poll_id: int):
     data = request.json
     poll = or_404(Poll.get(id=poll_id))
-    option = poll.options.select(lambda o: o.value == data['selected']).get()
+    option = poll.options.select(lambda o: o.id == data['selected']).get()
     option.votes.create()
     return Response(status=201)
