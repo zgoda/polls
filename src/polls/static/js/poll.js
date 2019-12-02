@@ -1,23 +1,53 @@
 import { html, Component, render } from '../vendor/preact.min.js';
 
+function Option(props) {
+  return html`
+    <div>
+      <label>
+        <input
+          type="radio"
+          name="option"
+          value="${props.option.id}"
+          onInput=${(e) => props.onInput(e)}
+        />
+        <span class="checkable">${props.option.title}</span>
+      </label>
+    </div>
+  `;
+}
+
 class App extends Component {
-  state = { poll: null, voted: false, selected: null };
+  state = { voted: false, selected: null, ready: false };
+
+  urls = { get: null, vote: null };
+
+  csrfToken = null;
+
+  poll = null;
+
+  constructor() {
+    super();
+    const pollId = document.getElementsByName('poll-id')[0].content;
+    this.csrfToken = document.getElementsByName('csrf-token')[0].content;
+    this.urls = {
+      get: `/api/poll/${pollId}`,
+      vote: `/api/poll${pollId}/vote`,
+    };
+  }
 
   async componentDidMount() {
-    const pollId = document.getElementsByName('poll-id')[0].content;
-    const csrfToken = document.getElementsByName('csrf-token')[0].content;
-    const url = `/api/poll/${pollId}`;
-    const resp = await fetch(url);
+    const resp = await fetch(this.urls.get);
     const poll = await resp.json();
-    this.setState({ poll, pollId, csrfToken });
+    this.poll = poll;
+    this.setState({ ready: true });
   }
 
   async doVote() {
-    const resp = await fetch(`/api/poll/${this.state.pollId}/vote`, {
+    const resp = await fetch(this.urls.vote, {
       method: 'POST',
       body: JSON.stringify({ selected: this.state.selected }),
       headers: {
-        'X-CSRFToken': this.state.csrfToken,
+        'X-CSRFToken': this.csrfToken,
         'Content-Type': 'application/json',
       },
     });
@@ -31,25 +61,18 @@ class App extends Component {
   }
 
   render() {
-    let ret = 'empty';
+    let ret = html`<div></div>`;
+    if (!this.state.ready) {
+      return ret;
+    }
     if (this.state.voted) {
       ret = html`<p>Thank you for your vote!</p>`;
-    } else if (this.state.poll != null) {
-      this.state.poll.options.sort((a, b) => ((a.title > b.title) ? 1 : -1));
+    } else if (this.poll != null) {
+      this.poll.options.sort((a, b) => ((a.title > b.title) ? 1 : -1));
       ret = html`
         <div class="app">
-          ${this.state.poll.options.map((option) => html`
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="option"
-                  value="${option.id}"
-                  onInput=${(e) => this.onOptionChange(e)}
-                />
-                <span class="checkable">${option.title}</span>
-              </label>
-            </div>
+          ${this.poll.options.map((option) => html`
+            <${Option} option=${option} onInput=${this.onOptionChange} />
           `)}
           <div>
             <button onClick=${() => this.doVote()}>Cast vote</button>

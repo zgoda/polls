@@ -1,5 +1,11 @@
 import { html, Component, render } from '../vendor/preact.min.js';
 
+function Poll(props) {
+  return html`
+    <li><a href="/poll/${props.poll.id}">${props.poll.title}</a></li>
+  `;
+}
+
 class App extends Component {
   state = { polls: [] };
 
@@ -14,7 +20,7 @@ class App extends Component {
       <div class="app">
         <ul>
           ${this.state.polls.map((poll) => html`
-          <li><a href="/poll/${poll.id}">${poll.title}</a></li>
+            <${Poll} poll=${poll} />
           `)}
         </ul>
       </div>
