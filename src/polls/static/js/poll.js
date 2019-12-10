@@ -31,7 +31,7 @@ class App extends Component {
     this.csrfToken = document.getElementsByName('csrf-token')[0].content;
     this.urls = {
       get: `/api/poll/${pollId}`,
-      vote: `/api/poll${pollId}/vote`,
+      vote: `/api/poll/${pollId}/vote`,
     };
   }
 
