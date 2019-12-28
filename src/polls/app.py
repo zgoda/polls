@@ -1,5 +1,6 @@
 import os
 from logging.config import dictConfig
+from uuid import uuid4
 
 from flask import render_template, send_from_directory
 from werkzeug.utils import ImportStringError
@@ -69,7 +70,10 @@ def configure_extensions(app):
 
 
 def configure_templating(app):
-    pass
+    app.jinja_env.globals.update({
+        'debug': app.debug,
+        'cache_buster': uuid4,
+    })
 
 
 def configure_logging():
