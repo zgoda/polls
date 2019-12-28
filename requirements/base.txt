@@ -1,6 +1,0 @@
-Flask
-Flask-WTF
-Pony
-Marshmallow
-Flask-Marshmallow
-python-dotenv

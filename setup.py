@@ -40,10 +40,34 @@ prod_reqs = [
     'uwsgi'
 ]
 
-dev_reqs = [
-    'watchdog',
-    'termcolor',
+test_reqs = [
+    'pytest',
+    'pytest-cov',
+    'pytest-flask',
+    'pytest-factoryboy',
 ]
+
+dev_reqs = [
+    'ipython',
+    'ipdb',
+    'pip',
+    'setuptools',
+    'wheel',
+    'flake8',
+    'flake8-builtins',
+    'flake8-bugbear',
+    'flake8-mutable',
+    'flake8-comprehensions',
+    'pep8-naming',
+    'dlint',
+    'doc8',
+    'rope',
+    'isort',
+    'Sphinx',
+    'werkzeug[watchdog]',
+    'termcolor',
+    'flask-shell-ipython',
+] + test_reqs
 
 setup(
     name='polls-app',
@@ -61,6 +85,7 @@ setup(
     install_requires=base_reqs,
     extras_require={
         'prod': prod_reqs,
+        'test': test_reqs,
         'dev': dev_reqs,
     },
     entry_points={
